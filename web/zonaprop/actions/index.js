@@ -1,5 +1,5 @@
 const actions = {
-  scrapActions: require("./scrap"),
+  scrapActions: require("./scrapActions"),
 };
 
 module.exports = actions;
