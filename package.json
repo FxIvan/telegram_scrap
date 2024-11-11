@@ -1,0 +1,20 @@
+{
+  "name": "telegram_scrap",
+  "version": "1.0.0",
+  "description": "Un proyecto de scraping en Node.js que recopila publicaciones de bienes raíces (alquileres, terrenos, y ventas de casas) desde varias inmobiliarias y las envía automáticamente a un grupo de Telegram.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "zonaprop": "functions-framework --target=zonaprop"
+  },
+  "keywords": [
+    "telegram",
+    "nodejs",
+    "scrap"
+  ],
+  "author": "FxIvan",
+  "license": "ISC",
+  "devDependencies": {
+    "@google-cloud/functions-framework": "^3.4.2"
+  }
+}
