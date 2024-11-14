@@ -15,7 +15,7 @@ const scrapActions = {
       await delay(5000);
       await page.waitForSelector('div.PostingCardContainer-sc-i1odl-1');
 
-      const prices = await page.$$eval('div.PostingCardContainer-sc-i1odl-1', elements => 
+      const rentalsProperties = await page.$$eval('div.PostingCardContainer-sc-i1odl-1', elements => 
         elements.map(el => {
           const priceElement = el.querySelector('div[data-qa="POSTING_CARD_PRICE"]');
           const nameInmb = el.querySelector('div.postingAddress')
@@ -28,7 +28,7 @@ const scrapActions = {
         })
       );
 
-      console.log('Precios de propiedades:', prices);
+      return rentalsProperties
     } catch (error) {
       console.error('Error en el scraping:', error);
     } finally {
