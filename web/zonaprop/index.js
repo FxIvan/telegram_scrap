@@ -1,7 +1,7 @@
 const { scrapActions } = require("./actions/index");
 const TelegramBot = require("node-telegram-bot-api");
 
-const TELEGRAM_TOKEN = "8097657593:AAH66i67oUP3devhgtq_Bo3vUrFWd4wHsCs";
+const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN_BOT;
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 const groupChatId = -1002396445267; // Reemplaza con el chatId de tu grupo
 
