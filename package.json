@@ -16,5 +16,8 @@
   "license": "ISC",
   "devDependencies": {
     "@google-cloud/functions-framework": "^3.4.2"
+  },
+  "dependencies": {
+    "puppeteer": "^23.7.1"
   }
 }
