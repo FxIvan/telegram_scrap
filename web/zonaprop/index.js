@@ -1,7 +1,7 @@
 const { scrapActions } = require("./actions/index");
 const TelegramBot = require("node-telegram-bot-api");
 
-const TELEGRAM_TOKEN = process.env.TELEGRAM_TOKEN_BOT;
+const TELEGRAM_TOKEN = "8097657593:AAH66i67oUP3devhgtq_Bo3vUrFWd4wHsCs";
 const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
 const groupChatId = -1002396445267; // Reemplaza con el chatId de tu grupo
 
@@ -10,16 +10,31 @@ exports.zonaprop = async (req, res) => {
     console.log("# zonaprop #");
     const rentalsProperties = await scrapActions.getScrap();
     console.log("RENTALPROPERTIES: ", rentalsProperties);
-    // Envía un mensaje al grupo
-    const mensaje = "Aquí tienes las propiedades de alquiler: " + "Hola";
-    // await bot.sendMessage(groupChatId, mensaje);
 
-    bot.sendMessage(groupChatId, mensaje)
+    async function sendMessagesWithDelay(rentalsProperties) {
+      for (const property of rentalsProperties.slice(0, 2)) {
+        const strct = 
+        `***Nombre:*** ${property.nameInmb} \n` +
+        `***Precio:*** ${property.price} \n` +
+        `[Link a la propiedad](${property.link}) \n` +
+        `***Publicada en:*** ZonaProp`;
+      
 
-    // Para obtener el chatId del grupo al recibir un mensaje
+        await bot.sendMessage(groupChatId, strct, {
+          parse_mode: "Markdown",
+        });
+
+        // Esperar 5 segundos antes de enviar el siguiente mensaje
+        await new Promise(resolve => setTimeout(resolve, 5000));
+      }
+    }
+
+    // Llamar a la función
+    sendMessagesWithDelay(rentalsProperties);
+
     bot.on("message", (msg) => {
       const chatId = msg.chat.id;
-      console.log("Chat ID:", chatId); // Verifica y guarda este ID si es del grupo
+      console.log("Chat ID:", chatId);
       bot.sendMessage(chatId, "Recibido tu mensaje");
     });
 
