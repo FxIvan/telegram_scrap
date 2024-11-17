@@ -3,7 +3,7 @@ const puppeteer = require("puppeteer");
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 const scrapActions = {
-  getScrap: async () => {
+  getScrap: async (url_zonaprop) => {
     const browser = await puppeteer.launch({
       headless: false,
       defaultViewport: false,
@@ -11,7 +11,7 @@ const scrapActions = {
     const page = await browser.newPage();
 
     try {
-      await page.goto('https://www.zonaprop.com.ar/departamentos-alquiler-q-quilmes.html', { waitUntil: 'domcontentloaded', timeout: 60000 });
+      await page.goto(url_zonaprop, { waitUntil: 'domcontentloaded', timeout: 60000 });
       await delay(5000);
       await page.waitForSelector('div.CardContainer-sc-1tt2vbg-5');
 
@@ -34,7 +34,6 @@ const scrapActions = {
         })
       );
 
-      console.log(rentalsProperties);
       return rentalsProperties;
     } catch (error) {
       console.error('Error en el scraping:', error);
