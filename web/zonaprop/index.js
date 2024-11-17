@@ -2,18 +2,27 @@ const { scrapActions } = require("./actions/index");
 const TelegramBot = require("node-telegram-bot-api");
 const { TELEGRAM_TOKEN, URL_ZONAPROP } = require("./config");
 
-const bot = new TelegramBot(TELEGRAM_TOKEN, { polling: true });
+const bot = new TelegramBot(TELEGRAM_TOKEN, {
+  polling: true,
+  request: {
+    agentOptions: {
+      keepAlive: true,
+      family: 4
+    }
+  }
+
+});
 const groupChatId = -1002396445267; // Reemplaza con el chatId de tu grupo
 
 exports.zonaprop = async (req, res) => {
   try {
     console.log("# zonaprop #");
     URL_ZONAPROP.map(async (url) => {
-      const rentalsProperties = await scrapActions.getScrap(url);
+      const rentalsProperties = await scrapActions.getScrap({ url });
       console.log("RENTALPROPERTIES: ", rentalsProperties);
 
       async function sendMessagesWithDelay(rentalsProperties) {
-        for (const property of rentalsProperties) {
+        for (const property of rentalsProperties.slice(0, 5)) {
           const strct =
             `***Nombre:*** ${property.nameInmb} \n` +
             `***Precio:*** ${property.price} \n` +
