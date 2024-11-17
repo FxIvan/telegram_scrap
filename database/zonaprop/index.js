@@ -15,10 +15,8 @@ const serviceMongoDB = ({ collectionName }) => {
 
     return {
       createdURL: async (url) => {
-        console.log(`# INFO: Creating URL: ${url}`);
         try {
           const url_info = await URL_Model.create({ url });
-          console.log(`# INFO: URL created: ${url_info}`);
           return url_info;
         } catch (error) {
           console.error(`# ERROR: ${error.message}`);
@@ -26,10 +24,8 @@ const serviceMongoDB = ({ collectionName }) => {
         }
       },
       findByURL: async (url) => {
-        console.log(`# INFO: Finding URL: ${url}`);
         try {
           const url_info = await URL_Model.findOne({ url });
-          console.log(`# INFO: URL found: ${url_info}`);
           return url_info;
         } catch (error) {
           console.error(`# ERROR: ${error.message}`);

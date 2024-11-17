@@ -16,7 +16,6 @@ const scrapActions = ({ dbHandler }) => ({
       await page.waitForSelector("div.CardContainer-sc-1tt2vbg-5");
 
       const existInDB = async(url_scrap) => {
-        console.log("URL SCRAP:", url_scrap);
         if (await dbHandler.findByURL(url_scrap)) return true;
         await dbHandler.createdURL(url_scrap);
         return false;
