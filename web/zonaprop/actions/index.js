@@ -1,6 +1,7 @@
 
 
-const  dbHandler = require("../../../database/zonaprop/index")({collectionName: "rentals"});
+const  dbHandler = require("../../../database/zonaprop/index")({collectionName: "ZONAPROP"});
+
 const actions = {
   scrapActions: require("./scrapActions")({ dbHandler }),
 };

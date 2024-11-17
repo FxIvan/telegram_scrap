@@ -1,13 +1,46 @@
-const serviceMongoDB = ({ collectionName }) => ({
-    createCollection: async () => {
-      try {
-        console.log("INFO | #Collection name: ", collectionName);
-        console.log(`# Collection created #`);
-      } catch (error) {
-        console.error(`# ERROR: ${error}`);
-      }
-    },
-  });
-  
+const mongoose = require("mongoose");
+const { MONGO_URI_DB } = require("../../web/zonaprop/config");
+const connectDB = require("./connect");
+const urlSchema = require("./models/urlModels");
+
+const serviceMongoDB = ({ collectionName }) => {
+  try {
+    if (!collectionName) {
+      throw new Error("Collection name is required.");
+    }
+    connectDB(MONGO_URI_DB);
+    const URL_Model =
+      mongoose.models[collectionName] ||
+      mongoose.model(collectionName, urlSchema, collectionName);
+
+    return {
+      createdURL: async (url) => {
+        console.log(`# INFO: Creating URL: ${url}`);
+        try {
+          const url_info = await URL_Model.create({ url });
+          console.log(`# INFO: URL created: ${url_info}`);
+          return url_info;
+        } catch (error) {
+          console.error(`# ERROR: ${error.message}`);
+          throw error;
+        }
+      },
+      findByURL: async (url) => {
+        console.log(`# INFO: Finding URL: ${url}`);
+        try {
+          const url_info = await URL_Model.findOne({ url });
+          console.log(`# INFO: URL found: ${url_info}`);
+          return url_info;
+        } catch (error) {
+          console.error(`# ERROR: ${error.message}`);
+          throw error;
+        }
+      },
+    };
+  } catch (error) {
+    console.error(`# ERROR: ${error.message}`);
+    throw error;
+  }
+};
 
 module.exports = serviceMongoDB;

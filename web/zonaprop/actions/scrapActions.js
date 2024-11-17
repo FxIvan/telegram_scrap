@@ -4,8 +4,6 @@ const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const scrapActions = ({ dbHandler }) => ({
   getScrap: async ({ url }) => {
-    console.log("URL ZONAPROP:", url);
-    dbHandler.createCollection();
     const browser = await puppeteer.launch({
       headless: false,
       defaultViewport: false,
@@ -16,6 +14,13 @@ const scrapActions = ({ dbHandler }) => ({
       await page.goto(url, { waitUntil: "domcontentloaded", timeout: 60000 });
       await delay(5000);
       await page.waitForSelector("div.CardContainer-sc-1tt2vbg-5");
+
+      const existInDB = async(url_scrap) => {
+        console.log("URL SCRAP:", url_scrap);
+        if (await dbHandler.findByURL(url_scrap)) return true;
+        await dbHandler.createdURL(url_scrap);
+        return false;
+      };
 
       const rentalsProperties = await page.$$eval(
         "div.CardContainer-sc-1tt2vbg-5",
@@ -45,8 +50,15 @@ const scrapActions = ({ dbHandler }) => ({
             };
           })
       );
-      console.log("RENTAL PROPERTIES getScrap:", rentalsProperties);
-      return rentalsProperties;
+
+      const clearDataDuplicatedInDB = async (_rentalsProperties) => {
+        const result = [];
+        for (const property of _rentalsProperties) {
+          if (!(await existInDB(property.link))) result.push(property);
+        }
+        return result;
+      };
+      return clearDataDuplicatedInDB(rentalsProperties);
     } catch (error) {
       console.error("Error en el scraping:", error);
     } finally {
